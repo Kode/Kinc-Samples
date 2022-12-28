@@ -1,0 +1,6 @@
+.DS_Store
+# ignore all build directories
+**/build/**
+# Ignore compiled shaders
+**/Deployment/*.frag
+**/Deployment/*.vert
