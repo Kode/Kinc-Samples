@@ -1,0 +1,4 @@
+/build
+/Deployment/*.frag
+/Deployment/*.vert
+/Deployment/*.comp
