@@ -56,10 +56,6 @@ jobs:
             git config --global --add safe.directory /home/runner/work/Kinc/Kinc/Tools/linux_arm64
             echo " * Get Submodules"
             ./get_dlc
-            echo " * Compile"
-            ./make -g opengl --kinc . --from Tests/Empty --compile
-            echo " * Clean"
-            rm -rf build
             echo " * Compile Shader"
             cd Shader
             ../Kinc/make -g opengl --compile
