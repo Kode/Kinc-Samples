@@ -1,0 +1,37 @@
+name: Windows (Direct3D 12)
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get Submodules
+      run: .\get_dlc.bat
+    - name: Compile
+      working-directory: Shader
+      run: .\make.bat -v vs2022 -g direct3d12 --compile
+    - name: Compile
+      working-directory: Texture
+      run: .\make.bat -v vs2022 -g direct3d12 --compile
+    - name: Compile
+      working-directory: MultiWindow
+      run: .\make.bat -v vs2022 -g direct3d12 --compile
+    - name: Compile
+      working-directory: ComputeShader
+      run: .\make.bat -v vs2022 -g direct3d12 --compile
+    - name: Compile
+      working-directory: TextureArray
+      run: .\make.bat -v vs2022 -g direct3d12 --compile
+    - name: Compile
+      working-directory: ShaderG5
+      run: .\make.bat -v vs2022 -g direct3d12 --compile
