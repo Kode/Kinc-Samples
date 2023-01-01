@@ -19,19 +19,19 @@ jobs:
       run: ./get_dlc
     - name: Compile Shader
       working-directory: Shader
-      run: ..\Kinc\make.bat ios -g opengl --nosigning --compile
+      run: ../Kinc/make ios -g opengl --nosigning --compile
     - name: Compile Texture
       working-directory: Texture
-      run: ..\Kinc\make.bat ios -g opengl --nosigning --compile
+      run: ../Kinc/make ios -g opengl --nosigning --compile
     - name: Compile MultiWindow
       working-directory: MultiWindow
-      run: ..\Kinc\make.bat ios -g opengl --nosigning --compile
+      run: ../Kinc/make ios -g opengl --nosigning --compile
     - name: Compile ComputeShader
       working-directory: ComputeShader
-      run: ..\Kinc\make.bat ios -g opengl --nosigning --compile
+      run: ../Kinc/make ios -g opengl --nosigning --compile
     - name: Compile TextureArray
       working-directory: TextureArray
-      run: ..\Kinc\make.bat ios -g opengl --nosigning --compile
+      run: ../Kinc/make ios -g opengl --nosigning --compile
     - name: Compile ShaderG5
       working-directory: ShaderG5
-      run: ..\Kinc\make.bat ios -g opengl --nosigning --compile
+      run: ../Kinc/make ios -g opengl --nosigning --compile
