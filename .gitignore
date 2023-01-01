@@ -4,3 +4,4 @@
 # Ignore compiled shaders
 **/Deployment/*.frag
 **/Deployment/*.vert
+**/Deployment/*.comp

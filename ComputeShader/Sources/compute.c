@@ -27,7 +27,7 @@ static kinc_compute_constant_location_t computeLocation;
 #define HEIGHT 768
 #define MAX_SHADER_SIZE 1024 * 1024 * 1024
 
-void update(void) {
+void update(void *data) {
 	kinc_g4_begin(0);
 	kinc_g4_clear(KINC_G4_CLEAR_COLOR | KINC_G4_CLEAR_DEPTH, 0, 0.0f, 0);
 
@@ -50,7 +50,7 @@ void update(void) {
 
 int kickstart(int argc, char **argv) {
 	kinc_init("Compute", WIDTH, HEIGHT, NULL, NULL);
-	kinc_set_update_callback(update);
+	kinc_set_update_callback(update, NULL);
 
 	kinc_g4_texture_init(&texture, 256, 256, KINC_IMAGE_FORMAT_RGBA128);
 
