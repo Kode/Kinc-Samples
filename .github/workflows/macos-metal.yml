@@ -19,7 +19,7 @@ jobs:
       run: ./get_dlc
     - name: Compile Shader
       working-directory: Shader
-      run: ../Kinc/make.bat -g metal --compile
+      run: ../Kinc/make -g metal --compile
     - name: Compile Texture
       working-directory: Texture
       run: ../Kinc/make -g metal --compile
