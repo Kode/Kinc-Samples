@@ -20,8 +20,7 @@ jobs:
     - name: Setup emscripten
       run: git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest
     - name: Compile Shader
-      working-directory: Shader
-      run: ../emsdk/emsdk activate && source ../emsdk/emsdk_env.sh && ../Kinc/make emscripten -g opengl --compile && cd build/Release && make
+      run: cd emsdk && ./emsdk activate && source ./emsdk_env.sh && cd ../Shader && ../Kinc/make emscripten -g opengl --compile && cd build/Release && make
     - name: Compile Texture
       working-directory: Texture
       run: ../Kinc/make emscripten -g opengl --compile && cd build/Release && make
