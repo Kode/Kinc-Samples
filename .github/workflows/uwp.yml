@@ -1,0 +1,37 @@
+name: UWP
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get Submodules
+      run: .\get_dlc.bat
+    - name: Compile Shader
+      working-directory: Shader
+      run: ..\Kinc\make.bat windowsapp -v vs2022 --compile
+    - name: Compile Texture
+      working-directory: Texture
+      run: ..\Kinc\make.bat windowsapp -v vs2022 --compile
+    - name: Compile MultiWindow
+      working-directory: MultiWindow
+      run: ..\Kinc\make.bat windowsapp -v vs2022 --compile
+    - name: Compile ComputeShader
+      working-directory: ComputeShader
+      run: ..\Kinc\make.bat windowsapp -v vs2022 --compile
+    - name: Compile TextureArray
+      working-directory: TextureArray
+      run: ..\Kinc\make.bat windowsapp -v vs2022 --compile
+    - name: Compile ShaderG5
+      working-directory: ShaderG5
+      run: ..\Kinc\make.bat windowsapp -v vs2022 --compile
