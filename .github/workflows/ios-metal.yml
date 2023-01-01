@@ -1,0 +1,37 @@
+name: iOS (Metal)
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  build:
+
+    runs-on: macOS-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get Submodules
+      run: ./get_dlc
+    - name: Compile Shader
+      working-directory: Shader
+      run: ..\Kinc\make.bat ios -g metal --nosigning --compile
+    - name: Compile Texture
+      working-directory: Texture
+      run: ..\Kinc\make.bat ios -g metal --nosigning --compile
+    - name: Compile MultiWindow
+      working-directory: MultiWindow
+      run: ..\Kinc\make.bat ios -g metal --nosigning --compile
+    - name: Compile ComputeShader
+      working-directory: ComputeShader
+      run: ..\Kinc\make.bat ios -g metal --nosigning --compile
+    - name: Compile TextureArray
+      working-directory: TextureArray
+      run: ..\Kinc\make.bat ios -g metal --nosigning --compile
+    - name: Compile ShaderG5
+      working-directory: ShaderG5
+      run: ..\Kinc\make.bat ios -g metal --nosigning --compile
