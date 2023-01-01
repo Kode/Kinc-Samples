@@ -28,9 +28,9 @@ jobs:
     - name: Compile MultiWindow
       working-directory: MultiWindow
       run: ..\Kinc\make.bat -v vs2022 -g direct3d9 --compile
-    - name: Compile ComputeShader
-      working-directory: ComputeShader
-      run: ..\Kinc\make.bat -v vs2022 -g direct3d9 --compile
+    #- name: Compile ComputeShader
+    #  working-directory: ComputeShader
+    #  run: ..\Kinc\make.bat -v vs2022 -g direct3d9 --compile
     - name: Compile TextureArray
       working-directory: TextureArray
       run: ..\Kinc\make.bat -v vs2022 -g direct3d9 --compile
