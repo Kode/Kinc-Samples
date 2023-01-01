@@ -33,7 +33,7 @@ static void *allocate(size_t size) {
 
 static bool first_update = true;
 
-static void update(void) {
+static void update(void *data) {
 	currentBuffer = (currentBuffer + 1) % BUFFER_COUNT;
 
 	kinc_g5_begin(&framebuffers[currentBuffer], 0);
@@ -51,7 +51,6 @@ static void update(void) {
 	kinc_g5_command_list_set_render_targets(&commandList, &p_framebuffer, 1);
 	kinc_g5_command_list_clear(&commandList, &framebuffers[currentBuffer], KINC_G5_CLEAR_COLOR, 0, 0.0f, 0);
 	kinc_g5_command_list_set_pipeline(&commandList, &pipeline);
-	kinc_g5_command_list_set_pipeline_layout(&commandList);
 
 	int offset = 0;
 	kinc_g5_vertex_buffer_t *p_vertices = &vertices;
@@ -80,7 +79,7 @@ static void load_shader(const char *filename, kinc_g5_shader_t *shader, kinc_g5_
 
 int kickstart(int argc, char **argv) {
 	kinc_init("Shader", 1024, 768, NULL, NULL);
-	kinc_set_update_callback(update);
+	kinc_set_update_callback(update, NULL);
 
 	heap = (uint8_t *)malloc(HEAP_SIZE);
 	assert(heap != NULL);
@@ -100,8 +99,7 @@ int kickstart(int argc, char **argv) {
 
 	kinc_g5_command_list_init(&commandList);
 	for (int i = 0; i < BUFFER_COUNT; ++i) {
-		kinc_g5_render_target_init(&framebuffers[i], kinc_window_width(0), kinc_window_height(0), 16, false, KINC_G5_RENDER_TARGET_FORMAT_32BIT, -1,
-		                           -i - 1 /* hack in an index for backbuffer render targets */);
+		kinc_g5_render_target_init_framebuffer(&framebuffers[i], kinc_window_width(0), kinc_window_height(0), KINC_G5_RENDER_TARGET_FORMAT_32BIT, 16, 0);
 	}
 
 	kinc_g5_vertex_buffer_init(&vertices, 3, &structure, true, 0);
