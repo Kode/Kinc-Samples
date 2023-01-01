@@ -18,10 +18,10 @@ jobs:
     - name: Get Submodules
       run: ./get_dlc
     - name: Setup emscripten
-      run: git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest && ./emsdk activate latest && source ./emsdk_env.sh
+      run: git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest
     - name: Compile Shader
       working-directory: Shader
-      run: ../Kinc/make emscripten -g opengl --compile && source ../emsdk/emsdk_env.sh && cd build/Release && make
+      run: ../emsdk/emsdk activate && source ../emsdk/emsdk_env.sh && ../Kinc/make emscripten -g opengl --compile && cd build/Release && make
     - name: Compile Texture
       working-directory: Texture
       run: ../Kinc/make emscripten -g opengl --compile && cd build/Release && make
