@@ -31,7 +31,7 @@ static void *allocate(size_t size) {
 	return &heap[old_top];
 }
 
-static update(void *data) {
+static void update(void *data) {
 	kinc_g4_begin(0);
 	kinc_g4_clear(KINC_G4_CLEAR_COLOR, 0, 0.0f, 0);
 	kinc_g4_set_pipeline(&pipeline);
@@ -53,7 +53,7 @@ static update(void *data) {
 	kinc_g4_swap_buffers();
 }
 
-static keyUp(int key) {
+static void keyUp(int key) {
 	if (key == KINC_KEY_ESCAPE) {
 		kinc_stop();
 	}
