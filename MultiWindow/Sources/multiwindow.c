@@ -1,3 +1,4 @@
+#include <kinc/display.h>
 #include <kinc/graphics4/graphics.h>
 #include <kinc/graphics4/indexbuffer.h>
 #include <kinc/graphics4/pipeline.h>
@@ -30,7 +31,7 @@ static void *allocate(size_t size) {
 	return &heap[old_top];
 }
 
-static update(void) {
+static update(void *data) {
 	kinc_g4_begin(0);
 	kinc_g4_clear(KINC_G4_CLEAR_COLOR, 0, 0.0f, 0);
 	kinc_g4_set_pipeline(&pipeline);
@@ -92,7 +93,7 @@ int kickstart(int argc, char **argv) {
 
 	kinc_keyboard_set_key_up_callback(keyUp);
 
-	kinc_set_update_callback(update);
+	kinc_set_update_callback(update, NULL);
 
 	heap = (uint8_t *)malloc(HEAP_SIZE);
 	assert(heap != NULL);
