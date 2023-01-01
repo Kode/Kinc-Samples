@@ -1,0 +1,45 @@
+name: Linux (Vulkan)
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get LunarG key
+      run: wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
+    - name: Get LunarG apt sources
+      run: sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-jammy.list http://packages.lunarg.com/vulkan/lunarg-vulkan-jammy.list
+    - name: Apt Update
+      run: sudo apt update
+    - name: Apt Install
+      run: sudo apt install libasound2-dev libxinerama-dev libxrandr-dev libgl1-mesa-dev libxi-dev libxcursor-dev libudev-dev vulkan-sdk libwayland-dev wayland-protocols libxkbcommon-dev --yes --quiet
+    - name: Get Submodules
+      run: ./get_dlc
+    - name: Compile Shader
+      working-directory: Shader
+      run: ../Kinc/make -g vulkan --compile
+    - name: Compile Texture
+      working-directory: Texture
+      run: ../Kinc/make -g vulkan --compile
+    - name: Compile MultiWindow
+      working-directory: MultiWindow
+      run: ../Kinc/make -g vulkan --compile
+    - name: Compile ComputeShader
+      working-directory: ComputeShader
+      run: ../Kinc/make -g vulkan --compile
+    - name: Compile TextureArray
+      working-directory: TextureArray
+      run: ../Kinc/make -g vulkan --compile
+    - name: Compile ShaderG5
+      working-directory: ShaderG5
+      run: ../Kinc/make -g vulkan --compile
