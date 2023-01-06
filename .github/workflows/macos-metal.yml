@@ -35,3 +35,6 @@ jobs:
     - name: Compile ShaderG5
       working-directory: ShaderG5
       run: ../Kinc/make -g metal --compile
+    - name: Compile RuntimeShaderCompilation
+      working-directory: RuntimeShaderCompilation
+      run: ../Kinc/make -g metal --compile

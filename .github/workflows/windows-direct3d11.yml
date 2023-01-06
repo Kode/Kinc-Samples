@@ -35,3 +35,6 @@ jobs:
     - name: Compile ShaderG5
       working-directory: ShaderG5
       run: ..\Kinc\make.bat -v vs2022 -g direct3d11 --compile
+    - name: Compile RuntimeShaderCompilation
+      working-directory: RuntimeShaderCompilation
+      run: ..\Kinc\make.bat -v vs2022 -g direct3d11 --compile
