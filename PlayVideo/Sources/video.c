@@ -7,6 +7,7 @@
 #include <kinc/image.h>
 #include <kinc/io/filereader.h>
 #include <kinc/system.h>
+#include <kinc/video.h>
 
 #include <assert.h>
 #include <stdlib.h>
@@ -16,7 +17,7 @@ static kinc_g4_shader_t fragmentShader;
 static kinc_g4_pipeline_t pipeline;
 static kinc_g4_vertex_buffer_t vertices;
 static kinc_g4_index_buffer_t indices;
-static kinc_g4_texture_t texture;
+static kinc_video_t video;
 static kinc_g4_texture_unit_t texunit;
 static kinc_g4_constant_location_t offset;
 
@@ -40,7 +41,7 @@ static void update(void *data) {
 	kinc_g4_set_matrix3(offset, &matrix);
 	kinc_g4_set_vertex_buffer(&vertices);
 	kinc_g4_set_index_buffer(&indices);
-	kinc_g4_set_texture(texunit, &texture);
+	kinc_g4_set_texture(texunit, kinc_video_current_image(&video));
 	kinc_g4_draw_indexed_vertices();
 
 	kinc_g4_end(0);
@@ -54,17 +55,11 @@ int kickstart(int argc, char **argv) {
 	heap = (uint8_t *)malloc(HEAP_SIZE);
 	assert(heap != NULL);
 
-	{
-		kinc_image_t image;
-		void *image_mem = allocate(250 * 250 * 4);
-		kinc_image_init_from_file(&image, image_mem, "parrot.png");
-		kinc_g4_texture_init_from_image(&texture, &image);
-		kinc_image_destroy(&image);
-	}
+	kinc_video_init(&video, "Video.whatever");
 
 	{
 		kinc_file_reader_t reader;
-		kinc_file_reader_open(&reader, "texture.vert", KINC_FILE_TYPE_ASSET);
+		kinc_file_reader_open(&reader, "video.vert", KINC_FILE_TYPE_ASSET);
 		size_t size = kinc_file_reader_size(&reader);
 		uint8_t *data = allocate(size);
 		kinc_file_reader_read(&reader, data, size);
@@ -75,7 +70,7 @@ int kickstart(int argc, char **argv) {
 
 	{
 		kinc_file_reader_t reader;
-		kinc_file_reader_open(&reader, "texture.frag", KINC_FILE_TYPE_ASSET);
+		kinc_file_reader_open(&reader, "video.frag", KINC_FILE_TYPE_ASSET);
 		size_t size = kinc_file_reader_size(&reader);
 		uint8_t *data = allocate(size);
 		kinc_file_reader_read(&reader, data, size);
@@ -123,6 +118,8 @@ int kickstart(int argc, char **argv) {
 	i[1] = 1;
 	i[2] = 2;
 	kinc_g4_index_buffer_unlock(&indices);
+
+	kinc_video_play(&video, true);
 
 	kinc_start();
 
