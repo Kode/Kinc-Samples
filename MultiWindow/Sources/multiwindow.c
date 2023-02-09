@@ -53,7 +53,7 @@ static void update(void *data) {
 	kinc_g4_swap_buffers();
 }
 
-static void keyUp(int key) {
+static void keyUp(int key, void *data) {
 	if (key == KINC_KEY_ESCAPE) {
 		kinc_stop();
 	}
@@ -91,7 +91,7 @@ int kickstart(int argc, char **argv) {
 
 	kinc_window_create(&options, NULL);
 
-	kinc_keyboard_set_key_up_callback(keyUp);
+	kinc_keyboard_set_key_up_callback(keyUp, NULL);
 
 	kinc_set_update_callback(update, NULL);
 
