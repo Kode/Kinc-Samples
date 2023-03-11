@@ -124,11 +124,11 @@ int kickstart(int argc, char **argv) {
 
 	kinc_g5_index_buffer_init(&indices, 3, KINC_G5_INDEX_BUFFER_FORMAT_16BIT, true);
 	{
-		uint16_t *i = (uint16_t *)kinc_g5_index_buffer_lock(&indices);
+		uint16_t *i = (uint16_t *)kinc_g5_index_buffer_lock_all(&indices);
 		i[0] = 0;
 		i[1] = 1;
 		i[2] = 2;
-		kinc_g5_index_buffer_unlock(&indices);
+		kinc_g5_index_buffer_unlock_all(&indices);
 	}
 
 	kinc_start();
