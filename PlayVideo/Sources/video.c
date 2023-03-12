@@ -55,7 +55,7 @@ int kickstart(int argc, char **argv) {
 	heap = (uint8_t *)malloc(HEAP_SIZE);
 	assert(heap != NULL);
 
-	kinc_video_init(&video, "Video.whatever");
+	kinc_video_init(&video, "video.mp4");
 
 	{
 		kinc_file_reader_t reader;
@@ -90,7 +90,7 @@ int kickstart(int argc, char **argv) {
 	pipeline.fragment_shader = &fragmentShader;
 	kinc_g4_pipeline_compile(&pipeline);
 
-	texunit = kinc_g4_pipeline_get_texture_unit(&pipeline, "texsampler");
+	texunit = kinc_g4_pipeline_get_texture_unit(&pipeline, "video_sampler");
 	offset = kinc_g4_pipeline_get_constant_location(&pipeline, "mvp");
 
 	kinc_g4_vertex_buffer_init(&vertices, 3, &structure, KINC_G4_USAGE_STATIC, 0);
