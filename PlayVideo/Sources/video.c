@@ -37,7 +37,7 @@ static void update(void *data) {
 	kinc_g4_clear(KINC_G4_CLEAR_COLOR, 0, 0.0f, 0);
 
 	kinc_g4_set_pipeline(&pipeline);
-	kinc_matrix3x3_t matrix = kinc_matrix3x3_rotation_z((float)kinc_time());
+	kinc_matrix3x3_t matrix = kinc_matrix3x3_identity();
 	kinc_g4_set_matrix3(offset, &matrix);
 	kinc_g4_set_vertex_buffer(&vertices);
 	kinc_g4_set_index_buffer(&indices);
@@ -93,30 +93,41 @@ int kickstart(int argc, char **argv) {
 	texunit = kinc_g4_pipeline_get_texture_unit(&pipeline, "video_sampler");
 	offset = kinc_g4_pipeline_get_constant_location(&pipeline, "mvp");
 
-	kinc_g4_vertex_buffer_init(&vertices, 3, &structure, KINC_G4_USAGE_STATIC, 0);
+	kinc_g4_vertex_buffer_init(&vertices, 4, &structure, KINC_G4_USAGE_STATIC, 0);
 	float *v = kinc_g4_vertex_buffer_lock_all(&vertices);
 	v[0] = -1.0f;
 	v[1] = -1.0f;
 	v[2] = 0.5f;
 	v[3] = 0.0f;
 	v[4] = 1.0f;
+
 	v[5] = 1.0f;
 	v[6] = -1.0f;
 	v[7] = 0.5f;
 	v[8] = 1.0f;
 	v[9] = 1.0f;
+
 	v[10] = -1.0f;
 	v[11] = 1.0f;
 	v[12] = 0.5f;
 	v[13] = 0.0f;
 	v[14] = 0.0f;
+	
+	v[15] = 1.0f;
+	v[16] = 1.0f;
+	v[17] = 0.5f;
+	v[18] = 1.0f;
+	v[19] = 0.0f;
 	kinc_g4_vertex_buffer_unlock_all(&vertices);
 
-	kinc_g4_index_buffer_init(&indices, 3, KINC_G4_INDEX_BUFFER_FORMAT_32BIT, KINC_G4_USAGE_STATIC);
+	kinc_g4_index_buffer_init(&indices, 6, KINC_G4_INDEX_BUFFER_FORMAT_32BIT, KINC_G4_USAGE_STATIC);
 	uint32_t *i = (uint32_t *)kinc_g4_index_buffer_lock_all(&indices);
 	i[0] = 0;
 	i[1] = 1;
 	i[2] = 2;
+	i[3] = 1;
+	i[4] = 3;
+	i[5] = 2;
 	kinc_g4_index_buffer_unlock_all(&indices);
 
 	kinc_video_play(&video, true);
