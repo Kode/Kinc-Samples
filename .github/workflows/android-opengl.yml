@@ -18,6 +18,7 @@ jobs:
 
     - name: Get Submodules
       run: ./get_dlc
+
     - name: Compile Shader
       working-directory: Shader
       run: ../Kinc/make android -g opengl --compile

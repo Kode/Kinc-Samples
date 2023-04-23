@@ -14,6 +14,9 @@ const samples = [
 const workflowsDir = path.join('.github', 'workflows');
 
 function writeWorkflow(workflow) {
+  const steps = workflow.steps ?? '';
+  const postfixSteps = workflow.postfixSteps ?? '';
+
   let workflowText = `name: ${workflow.sys} (${workflow.gfx})
 
 on:
@@ -31,9 +34,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-${workflow.steps}
+${steps}
     - name: Get Submodules
       run: ./get_dlc
+${postfixSteps}
 `;
 
   for (const sample of samples) {
@@ -42,10 +46,19 @@ ${workflow.steps}
         continue;
       }
     }
+
+    if (workflow.isOld && (sample === 'ComputeShader' || sample === 'TextureArray')) {
+      continue;
+    }
+
+    const prefix = workflow.compilePrefix ?? '';
+    const postfix = workflow.compilePostfix ?? '';
+    const gfx = (workflow.gfx === 'WebGL') ? 'opengl' : workflow.gfx.toLowerCase();
+
     workflowText +=
 `    - name: Compile ${sample}
       working-directory: ${sample}
-      run: ../Kinc/make ${workflow.sys.toLowerCase()} -g ${workflow.gfx.toLowerCase()} --compile
+      run: ${prefix}../Kinc/make ${workflow.sys.toLowerCase()} -g ${gfx} --compile${postfix}
 `;
   }
 
@@ -55,13 +68,34 @@ ${workflow.steps}
 const workflows = [
   {
     sys: 'Android',
-    gfx: 'OpenGL',
-    steps: ''
+    gfx: 'OpenGL'
   },
   {
     sys: 'Android',
-    gfx: 'Vulkan',
-    steps: ''
+    gfx: 'Vulkan'
+  },
+  {
+    sys: 'Emscripten',
+    gfx: 'WebGL',
+    steps: '',
+    compilePrefix: '../emsdk/emsdk activate latest && source ../emsdk/emsdk_env.sh && ',
+    compilePostfix: ' && cd build/Release && make',
+    postfixSteps:
+`    - name: Setup emscripten
+      run: git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest
+`,
+    isOld: true
+  },
+  {
+    sys: 'Emscripten',
+    gfx: 'WebGPU',
+    steps: '',
+    compilePrefix: '../emsdk/emsdk activate latest && source ../emsdk/emsdk_env.sh && ',
+    compilePostfix: ' && cd build/Release && make',
+    postfixSteps:
+`    - name: Setup emscripten
+      run: git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest
+`
   },
   {
     sys: 'Linux',
