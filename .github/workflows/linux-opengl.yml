@@ -19,26 +19,27 @@ jobs:
       run: sudo apt update
     - name: Apt Install
       run: sudo apt-get install libasound2-dev libxinerama-dev libxrandr-dev libgl1-mesa-dev libxi-dev libxcursor-dev libudev-dev libwayland-dev wayland-protocols libxkbcommon-dev ninja-build --yes --quiet
+
     - name: Get Submodules
       run: ./get_dlc
     - name: Compile Shader
       working-directory: Shader
-      run: ../Kinc/make -g opengl --compile
+      run: ../Kinc/make linux -g opengl --compile
     - name: Compile Texture
       working-directory: Texture
-      run: ../Kinc/make -g opengl --compile
+      run: ../Kinc/make linux -g opengl --compile
     - name: Compile MultiWindow
       working-directory: MultiWindow
-      run: ../Kinc/make -g opengl --compile
+      run: ../Kinc/make linux -g opengl --compile
     - name: Compile ComputeShader
       working-directory: ComputeShader
-      run: ../Kinc/make -g opengl --compile
+      run: ../Kinc/make linux -g opengl --compile
     - name: Compile TextureArray
       working-directory: TextureArray
-      run: ../Kinc/make -g opengl --compile
+      run: ../Kinc/make linux -g opengl --compile
     - name: Compile ShaderG5
       working-directory: ShaderG5
-      run: ../Kinc/make -g opengl --compile
+      run: ../Kinc/make linux -g opengl --compile
     - name: Compile RuntimeShaderCompilation
       working-directory: RuntimeShaderCompilation
-      run: ../Kinc/make -g opengl --compile
+      run: ../Kinc/make linux -g opengl --compile
