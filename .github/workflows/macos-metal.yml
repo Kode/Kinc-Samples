@@ -15,26 +15,28 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Get Submodules
       run: ./get_dlc
+
     - name: Compile Shader
       working-directory: Shader
-      run: ../Kinc/make -g metal --compile
+      run: ../Kinc/make osx -g metal --compile
     - name: Compile Texture
       working-directory: Texture
-      run: ../Kinc/make -g metal --compile
+      run: ../Kinc/make osx -g metal --compile
     - name: Compile MultiWindow
       working-directory: MultiWindow
-      run: ../Kinc/make -g metal --compile
+      run: ../Kinc/make osx -g metal --compile
     - name: Compile ComputeShader
       working-directory: ComputeShader
-      run: ../Kinc/make -g metal --compile
+      run: ../Kinc/make osx -g metal --compile
     - name: Compile TextureArray
       working-directory: TextureArray
-      run: ../Kinc/make -g metal --compile
+      run: ../Kinc/make osx -g metal --compile
     - name: Compile ShaderG5
       working-directory: ShaderG5
-      run: ../Kinc/make -g metal --compile
+      run: ../Kinc/make osx -g metal --compile
     - name: Compile RuntimeShaderCompilation
       working-directory: RuntimeShaderCompilation
-      run: ../Kinc/make -g metal --compile
+      run: ../Kinc/make osx -g metal --compile

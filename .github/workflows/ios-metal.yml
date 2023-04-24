@@ -12,11 +12,13 @@ jobs:
   build:
 
     runs-on: macOS-latest
-    
+
     steps:
     - uses: actions/checkout@v2
+
     - name: Get Submodules
       run: ./get_dlc
+
     - name: Compile Shader
       working-directory: Shader
       run: ../Kinc/make ios -g metal --nosigning --compile
