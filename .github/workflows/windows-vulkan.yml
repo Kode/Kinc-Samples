@@ -12,7 +12,7 @@ jobs:
   build:
 
     runs-on: windows-latest
-    
+
     steps:
     - uses: actions/checkout@v2
     - name: Setup Vulkan
@@ -21,34 +21,35 @@ jobs:
           $installer = Start-Process -FilePath VulkanSDK.exe -Wait -PassThru -ArgumentList @("--da", "--al", "-c", "in");
           $installer.WaitForExit();
     - name: Get Submodules
-      run: .\get_dlc.bat
+      run: ./get_dlc
+
     - name: Compile Shader
       working-directory: Shader
-      run: ..\Kinc\make.bat -v vs2022 -g vulkan --compile
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
       env:
         VULKAN_SDK: C:\VulkanSDK\1.2.189.2
     - name: Compile Texture
       working-directory: Texture
-      run: ..\Kinc\make.bat -v vs2022 -g vulkan --compile
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
       env:
         VULKAN_SDK: C:\VulkanSDK\1.2.189.2
     - name: Compile MultiWindow
       working-directory: MultiWindow
-      run: ..\Kinc\make.bat -v vs2022 -g vulkan --compile
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
       env:
         VULKAN_SDK: C:\VulkanSDK\1.2.189.2
     - name: Compile ComputeShader
       working-directory: ComputeShader
-      run: ..\Kinc\make.bat -v vs2022 -g vulkan --compile
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
       env:
         VULKAN_SDK: C:\VulkanSDK\1.2.189.2
     - name: Compile TextureArray
       working-directory: TextureArray
-      run: ..\Kinc\make.bat -v vs2022 -g vulkan --compile
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
       env:
         VULKAN_SDK: C:\VulkanSDK\1.2.189.2
     - name: Compile ShaderG5
       working-directory: ShaderG5
-      run: ..\Kinc\make.bat -v vs2022 -g vulkan --compile
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
       env:
         VULKAN_SDK: C:\VulkanSDK\1.2.189.2

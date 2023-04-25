@@ -17,7 +17,8 @@ function writeWorkflow(workflow) {
   const steps = workflow.steps ?? '';
   const postfixSteps = workflow.postfixSteps ?? '';
 
-  let workflowText = `name: ${workflow.sys} (${workflow.gfx})
+  const workflowName = workflow.gfx ? (workflow.sys + ' (' + workflow.gfx + ')') : workflow.sys;
+  let workflowText = `name: ${workflowName}
 
 on:
   push:
@@ -57,18 +58,23 @@ ${postfixSteps}
 
     const prefix = workflow.compilePrefix ?? '';
     const postfix = workflow.compilePostfix ?? '';
-    const gfx = (workflow.gfx === 'WebGL') ? 'opengl' : workflow.gfx.toLowerCase();
+    const gfx = workflow.gfx ? ((workflow.gfx === 'WebGL') ? ' -g opengl' : ' -g ' + workflow.gfx.toLowerCase().replace(/ /g, '')) : '';
     const options = workflow.options ? ' ' + workflow.options : '';
-    const sys = workflow.sys === 'macOS' ? 'osx' : workflow.sys.toLowerCase();
+    const sys = workflow.sys === 'macOS' ? 'osx' : (workflow.sys === 'UWP' ? 'windowsapp' : workflow.sys.toLowerCase());
+    const vs = workflow.vs ? ' -v ' + workflow.vs : '';
 
     workflowText +=
 `    - name: Compile ${sample}
       working-directory: ${sample}
-      run: ${prefix}../Kinc/make ${sys} -g ${gfx}${options} --compile${postfix}
+      run: ${prefix}../Kinc/make ${sys}${vs}${gfx}${options} --compile${postfix}
 `;
+    if (workflow.env) {
+      workflowText += workflow.env;
+    }
   }
 
-  fs.writeFileSync(path.join(workflowsDir, workflow.sys.toLowerCase() + '-' + workflow.gfx.toLowerCase() + '.yml'), workflowText, {encoding: 'utf8'});
+  const name = workflow.gfx ? (workflow.sys.toLowerCase() + '-' + workflow.gfx.toLowerCase().replace(/ /g, '')) : workflow.sys.toLowerCase();
+  fs.writeFileSync(path.join(workflowsDir, name + '.yml'), workflowText, {encoding: 'utf8'});
 }
 
 const workflows = [
@@ -158,6 +164,57 @@ const workflows = [
     sys: 'macOS',
     gfx: 'OpenGL',
     runsOn: 'macOS-latest'
+  },
+  {
+    sys: 'UWP',
+    runsOn: 'windows-latest',
+    vs: 'vs2022'
+  },
+  {
+    sys: 'Windows',
+    gfx: 'Direct3D 9',
+    runsOn: 'windows-latest',
+    noCompute: true,
+    noTexArray: true,
+    vs: 'vs2022',
+    postfixSteps:
+`    - name: Install DirectX
+      run: choco install -y directx --no-progress`
+  },
+  {
+    sys: 'Windows',
+    gfx: 'Direct3D 11',
+    runsOn: 'windows-latest',
+    RuntimeShaderCompilation: true,
+    vs: 'vs2022'
+  },
+  {
+    sys: 'Windows',
+    gfx: 'Direct3D 12',
+    runsOn: 'windows-latest',
+    vs: 'vs2022'
+  },
+  {
+    sys: 'Windows',
+    gfx: 'OpenGL',
+    runsOn: 'windows-latest',
+    vs: 'vs2022'
+  },
+  {
+    sys: 'Windows',
+    gfx: 'Vulkan',
+    runsOn: 'windows-latest',
+    vs: 'vs2022',
+    env:
+`      env:
+        VULKAN_SDK: C:\\VulkanSDK\\1.2.189.2
+`,
+    steps:
+`    - name: Setup Vulkan
+      run: |
+          Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/1.2.189.2/windows/VulkanSDK-1.2.189.2-Installer.exe" -OutFile VulkanSDK.exe
+          $installer = Start-Process -FilePath VulkanSDK.exe -Wait -PassThru -ArgumentList @("--da", "--al", "-c", "in");
+          $installer.WaitForExit();`
   }
 ];
 
