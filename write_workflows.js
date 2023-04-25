@@ -30,7 +30,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${workflow.runsOn}
 
     steps:
     - uses: actions/checkout@v2
@@ -47,18 +47,24 @@ ${postfixSteps}
       }
     }
 
-    if (workflow.isOld && (sample === 'ComputeShader' || sample === 'TextureArray')) {
+    if (workflow.noCompute && sample === 'ComputeShader') {
+      continue;
+    }
+
+    if (workflow.noTexArray && sample === 'TextureArray') {
       continue;
     }
 
     const prefix = workflow.compilePrefix ?? '';
     const postfix = workflow.compilePostfix ?? '';
     const gfx = (workflow.gfx === 'WebGL') ? 'opengl' : workflow.gfx.toLowerCase();
+    const options = workflow.options ? ' ' + workflow.options : '';
+    const sys = workflow.sys === 'macOS' ? 'osx' : workflow.sys.toLowerCase();
 
     workflowText +=
 `    - name: Compile ${sample}
       working-directory: ${sample}
-      run: ${prefix}../Kinc/make ${workflow.sys.toLowerCase()} -g ${gfx} --compile${postfix}
+      run: ${prefix}../Kinc/make ${sys} -g ${gfx}${options} --compile${postfix}
 `;
   }
 
@@ -68,15 +74,18 @@ ${postfixSteps}
 const workflows = [
   {
     sys: 'Android',
-    gfx: 'OpenGL'
+    gfx: 'OpenGL',
+    runsOn: 'ubuntu-latest'
   },
   {
     sys: 'Android',
-    gfx: 'Vulkan'
+    gfx: 'Vulkan',
+    runsOn: 'ubuntu-latest'
   },
   {
     sys: 'Emscripten',
     gfx: 'WebGL',
+    runsOn: 'ubuntu-latest',
     steps: '',
     compilePrefix: '../emsdk/emsdk activate latest && source ../emsdk/emsdk_env.sh && ',
     compilePostfix: ' && cd build/Release && make',
@@ -84,11 +93,13 @@ const workflows = [
 `    - name: Setup emscripten
       run: git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest
 `,
-    isOld: true
+    noCompute: true,
+    noTexArray: true
   },
   {
     sys: 'Emscripten',
     gfx: 'WebGPU',
+    runsOn: 'ubuntu-latest',
     steps: '',
     compilePrefix: '../emsdk/emsdk activate latest && source ../emsdk/emsdk_env.sh && ',
     compilePostfix: ' && cd build/Release && make',
@@ -98,8 +109,22 @@ const workflows = [
 `
   },
   {
+    sys: 'iOS',
+    gfx: 'Metal',
+    runsOn: 'macOS-latest',
+    options: '--nosigning'
+  },
+  {
+    sys: 'iOS',
+    gfx: 'OpenGL',
+    runsOn: 'macOS-latest',
+    options: '--nosigning',
+    noCompute: true
+  },
+  {
     sys: 'Linux',
     gfx: 'OpenGL',
+    runsOn: 'ubuntu-latest',
     steps:
 `    - name: Apt Update
       run: sudo apt update
@@ -111,6 +136,7 @@ const workflows = [
   {
     sys: 'Linux',
     gfx: 'Vulkan',
+    runsOn: 'ubuntu-latest',
     steps:
 `    - name: Get LunarG key
       run: wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
@@ -121,6 +147,17 @@ const workflows = [
     - name: Apt Install
       run: sudo apt install libasound2-dev libxinerama-dev libxrandr-dev libgl1-mesa-dev libxi-dev libxcursor-dev libudev-dev vulkan-sdk libwayland-dev wayland-protocols libxkbcommon-dev ninja-build --yes --quiet
 `
+  },
+  {
+    sys: 'macOS',
+    gfx: 'Metal',
+    runsOn: 'macOS-latest',
+    RuntimeShaderCompilation: true
+  },
+  {
+    sys: 'macOS',
+    gfx: 'OpenGL',
+    runsOn: 'macOS-latest'
   }
 ];
 
