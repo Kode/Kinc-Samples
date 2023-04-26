@@ -12,10 +12,10 @@ jobs:
   build:
 
     runs-on: macos-12
-    name: FreeBSD build
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Get Submodules
       run: ./get_dlc
     - name: Get the FreeBSD-submodule
@@ -31,25 +31,25 @@ jobs:
         run: |
           echo " * Compile Shader"
           cd Shader
-          ../Kinc/make -g opengl --compile
+          ../Kinc/make freebsd -g opengl --compile
           cd ..
           echo " * Compile Texture"
           cd Texture
-          ../Kinc/make -g opengl --compile
+          ../Kinc/make freebsd -g opengl --compile
           cd ..
           echo " * Compile MultiWindow"
           cd MultiWindow
-          ../Kinc/make -g opengl --compile
+          ../Kinc/make freebsd -g opengl --compile
           cd ..
           echo " * Compile ComputeShader"
           cd ComputeShader
-          ../Kinc/make -g opengl --compile
+          ../Kinc/make freebsd -g opengl --compile
           cd ..
           echo " * Compile TextureArray"
           cd TextureArray
-          ../Kinc/make -g opengl --compile
+          ../Kinc/make freebsd -g opengl --compile
           cd ..
           echo " * Compile ShaderG5"
           cd ShaderG5
-          ../Kinc/make -g opengl --compile
+          ../Kinc/make freebsd -g opengl --compile
           cd ..
