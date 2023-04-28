@@ -88,9 +88,115 @@ ${steps}
   fs.writeFileSync(path.join(workflowsDir, name + '.yml'), workflowText, {encoding: 'utf8'});
 }
 
+function writeLinuxArmWorkflow(workflow) {
+  const steps = workflow.steps ?? '';
+  const postfixSteps = workflow.postfixSteps ?? '';
+
+  const workflowName = workflow.gfx ? (workflow.sys + ' (' + workflow.gfx + ')') : workflow.sys;
+  let workflowText = `name: Linux on ARM (OpenGL)
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build on \${{ matrix.distro }} \${{ matrix.arch }}
+
+    # Run steps for both armv6 and aarch64
+    strategy:
+      matrix:
+        include:
+          - arch: aarch64
+            distro: ubuntu20.04
+          - arch: armv7
+            distro: ubuntu20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: uraimo/run-on-arch-action@v2.0.9
+        name: Run Tests in \${{ matrix.distro }} \${{ matrix.arch }}
+        id: build
+        with:
+          arch: \${{ matrix.arch }}
+          distro: \${{ matrix.distro }}
+
+          # Not required, but speeds up builds
+          githubToken: \${{ github.token }}
+
+          # The shell to run commands with in the container
+          shell: /bin/bash
+
+          # Install some dependencies in the container. This speeds up builds if
+          # you are also using githubToken. Any dependencies installed here will
+          # be part of the container image that gets cached, so subsequent
+          # builds don't have to re-install them. The image layer is cached
+          # publicly in your project's package repository, so it is vital that
+          # no secrets are present in the container state or logs.
+          install: |
+              apt-get update -y -q
+              apt-get upgrade -y -q
+              apt-get install -y -q libasound2-dev libxinerama-dev libxrandr-dev libgl1-mesa-dev libxi-dev libxcursor-dev libudev-dev git build-essential imagemagick xvfb libwayland-dev wayland-protocols libxkbcommon-dev ninja-build
+
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
+            echo " * Make Git happy"
+            git config --global --add safe.directory /home/runner/work/Kinc-Samples/Kinc-Samples
+            git config --global --add safe.directory /home/runner/work/Kinc-Samples/Kinc-Samples/Kinc
+            git config --global --add safe.directory /home/runner/work/Kinc-Samples/Kinc-Samples/Kinc/Tools/linux_arm
+            git config --global --add safe.directory /home/runner/work/Kinc-Samples/Kinc-Samples/Kinc/Tools/linux_arm64
+            echo " * Get Submodules"
+            ./get_dlc
+`;
+
+  for (const sample of samples) {
+    if (sample === 'RuntimeShaderCompilation') {
+      if (!workflow.RuntimeShaderCompilation) {
+        continue;
+      }
+    }
+
+    if (workflow.noCompute && sample === 'ComputeShader') {
+      continue;
+    }
+
+    if (workflow.noTexArray && sample === 'TextureArray') {
+      continue;
+    }
+
+    const prefix = workflow.compilePrefix ?? '';
+    const postfix = workflow.compilePostfix ?? '';
+    const gfx = workflow.gfx ? ((workflow.gfx === 'WebGL') ? ' -g opengl' : ' -g ' + workflow.gfx.toLowerCase().replace(/ /g, '')) : '';
+    const options = workflow.options ? ' ' + workflow.options : '';
+    const sys = workflow.sys === 'macOS' ? 'osx' : (workflow.sys === 'UWP' ? 'windowsapp' : workflow.sys.toLowerCase());
+    const vs = workflow.vs ? ' -v ' + workflow.vs : '';
+
+    workflowText +=
+`            echo " * Compile ${sample}"
+            cd ${sample}
+            ../Kinc/make -g opengl --compile
+            cd ..
+`;
+    if (workflow.env) {
+      workflowText += workflow.env;
+    }
+  }
+
+  fs.writeFileSync(path.join(workflowsDir, 'linux-arm-opengl.yml'), workflowText, {encoding: 'utf8'});
+}
+
 function writeWorkflow(workflow) {
   if (workflow.sys === 'FreeBSD') {
     writeFreeBSDWorkflow(workflow);
+    return;
+  }
+  if (workflow.sys === 'Linux' && workflow.cpu === 'ARM') {
+    writeLinuxArmWorkflow(workflow);
     return;
   }
 
@@ -211,6 +317,11 @@ const workflows = [
     runsOn: 'macOS-latest',
     options: '--nosigning',
     noCompute: true
+  },
+  {
+    sys: 'Linux',
+    gfx: 'OpenGL',
+    cpu: 'ARM'
   },
   {
     sys: 'Linux',
