@@ -4,12 +4,12 @@
 #include <kinc/graphics4/shader.h>
 #include <kinc/graphics4/vertexbuffer.h>
 #include <kinc/io/filereader.h>
-#include <kinc/system.h>
 #include <kinc/log.h>
+#include <kinc/system.h>
 
 #include <assert.h>
-#include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
 #include <string.h>
 
 static kinc_g4_shader_t vertex_shader;
@@ -31,13 +31,13 @@ static void *allocate(size_t size) {
 }
 
 float vec4_length(kinc_vector3_t a) {
-	return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+	return sqrtf(a.x * a.x + a.y * a.y + a.z * a.z);
 }
 
 kinc_vector3_t vec4_normalize(kinc_vector3_t a) {
 	float n = vec4_length(a);
 	if (n > 0.0) {
-		float inv_n = 1.0 / n;
+		float inv_n = 1.0f / n;
 		a.x *= inv_n;
 		a.y *= inv_n;
 		a.z *= inv_n;
@@ -66,14 +66,9 @@ float vec4_dot(kinc_vector3_t a, kinc_vector3_t b) {
 }
 
 kinc_matrix4x4_t matrix4x4_perspective_projection(float fovy, float aspect, float zn, float zf) {
-	float uh = 1.0 / tan(fovy / 2);
+	float uh = 1.0f / tanf(fovy / 2);
 	float uw = uh / aspect;
-	kinc_matrix4x4_t m = {
-		uw, 0, 0, 0,
-		0, uh, 0, 0,
-		0, 0, (zf + zn) / (zn - zf), -1,
-		0, 0, 2 * zf * zn / (zn - zf), 0
-	};
+	kinc_matrix4x4_t m = {uw, 0, 0, 0, 0, uh, 0, 0, 0, 0, (zf + zn) / (zn - zf), -1, 0, 0, 2 * zf * zn / (zn - zf), 0};
 	return m;
 }
 
@@ -81,12 +76,22 @@ kinc_matrix4x4_t matrix4x4_look_at(kinc_vector3_t eye, kinc_vector3_t at, kinc_v
 	kinc_vector3_t zaxis = vec4_normalize(vec4_sub(at, eye));
 	kinc_vector3_t xaxis = vec4_normalize(vec4_cross(zaxis, up));
 	kinc_vector3_t yaxis = vec4_cross(xaxis, zaxis);
-	kinc_matrix4x4_t m = {
-		xaxis.x, yaxis.x, -zaxis.x, 0,
-		xaxis.y, yaxis.y, -zaxis.y, 0,
-		xaxis.z, yaxis.z, -zaxis.z, 0,
-		-vec4_dot(xaxis, eye), -vec4_dot(yaxis, eye), vec4_dot(zaxis, eye), 1
-	};
+	kinc_matrix4x4_t m = {xaxis.x,
+	                      yaxis.x,
+	                      -zaxis.x,
+	                      0,
+	                      xaxis.y,
+	                      yaxis.y,
+	                      -zaxis.y,
+	                      0,
+	                      xaxis.z,
+	                      yaxis.z,
+	                      -zaxis.z,
+	                      0,
+	                      -vec4_dot(xaxis, eye),
+	                      -vec4_dot(yaxis, eye),
+	                      vec4_dot(zaxis, eye),
+	                      1};
 	return m;
 }
 
@@ -100,10 +105,10 @@ kinc_matrix4x4_t matrix4x4_identity(void) {
 }
 
 static void update(void *data) {
-	kinc_matrix4x4_t projection = matrix4x4_perspective_projection(45.0, 4.0 / 3.0, 0.1, 100.0);
-	kinc_vector3_t v0 = { 4, 3, 3 };
-	kinc_vector3_t v1 = { 0, 0, 0 };
-	kinc_vector3_t v2 = { 0, 1, 0 };
+	kinc_matrix4x4_t projection = matrix4x4_perspective_projection(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+	kinc_vector3_t v0 = {4, 3, 3};
+	kinc_vector3_t v1 = {0, 0, 0};
+	kinc_vector3_t v2 = {0, 1, 0};
 	kinc_matrix4x4_t view = matrix4x4_look_at(v0, v1, v2);
 	kinc_matrix4x4_t model = matrix4x4_identity();
 	kinc_matrix4x4_t mvp = matrix4x4_identity();
@@ -177,11 +182,11 @@ int kickstart(int argc, char **argv) {
 
 	kinc_g4_index_buffer_init(&indices, 3, KINC_G4_INDEX_BUFFER_FORMAT_16BIT, KINC_G4_USAGE_STATIC);
 	{
-		uint16_t *i = (uint16_t *)kinc_g4_index_buffer_lock(&indices);
+		uint16_t *i = (uint16_t *)kinc_g4_index_buffer_lock_all(&indices);
 		i[0] = 0;
 		i[1] = 1;
 		i[2] = 2;
-		kinc_g4_index_buffer_unlock(&indices);
+		kinc_g4_index_buffer_unlock_all(&indices);
 	}
 
 	kinc_start();

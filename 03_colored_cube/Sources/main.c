@@ -4,13 +4,13 @@
 #include <kinc/graphics4/shader.h>
 #include <kinc/graphics4/vertexbuffer.h>
 #include <kinc/io/filereader.h>
-#include <kinc/system.h>
 #include <kinc/log.h>
+#include <kinc/system.h>
 #include <kinc/window.h>
 
 #include <assert.h>
-#include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
 #include <string.h>
 
 static kinc_g4_shader_t vertex_shader;
@@ -24,6 +24,7 @@ static kinc_g4_constant_location_t mvp_loc;
 static uint8_t *heap = NULL;
 static size_t heap_top = 0;
 
+/* clang-format off */
 static float vertices_data[] = {
     -1.0,-1.0,-1.0,
 	-1.0,-1.0, 1.0,
@@ -64,43 +65,44 @@ static float vertices_data[] = {
 };
 
 static float colors_data[] = {
-    0.583,  0.771,  0.014,
-	0.609,  0.115,  0.436,
-	0.327,  0.483,  0.844,
-	0.822,  0.569,  0.201,
-	0.435,  0.602,  0.223,
-	0.310,  0.747,  0.185,
-	0.597,  0.770,  0.761,
-	0.559,  0.436,  0.730,
-	0.359,  0.583,  0.152,
-	0.483,  0.596,  0.789,
-	0.559,  0.861,  0.639,
-	0.195,  0.548,  0.859,
-	0.014,  0.184,  0.576,
-	0.771,  0.328,  0.970,
-	0.406,  0.615,  0.116,
-	0.676,  0.977,  0.133,
-	0.971,  0.572,  0.833,
-	0.140,  0.616,  0.489,
-	0.997,  0.513,  0.064,
-	0.945,  0.719,  0.592,
-	0.543,  0.021,  0.978,
-	0.279,  0.317,  0.505,
-	0.167,  0.620,  0.077,
-	0.347,  0.857,  0.137,
-	0.055,  0.953,  0.042,
-	0.714,  0.505,  0.345,
-	0.783,  0.290,  0.734,
-	0.722,  0.645,  0.174,
-	0.302,  0.455,  0.848,
-	0.225,  0.587,  0.040,
-	0.517,  0.713,  0.338,
-	0.053,  0.959,  0.120,
-	0.393,  0.621,  0.362,
-	0.673,  0.211,  0.457,
-	0.820,  0.883,  0.371,
-	0.982,  0.099,  0.879
+    0.583f,  0.771f,  0.014f,
+	0.609f,  0.115f,  0.436f,
+	0.327f,  0.483f,  0.844f,
+	0.822f,  0.569f,  0.201f,
+	0.435f,  0.602f,  0.223f,
+	0.310f,  0.747f,  0.185f,
+	0.597f,  0.770f,  0.761f,
+	0.559f,  0.436f,  0.730f,
+	0.359f,  0.583f,  0.152f,
+	0.483f,  0.596f,  0.789f,
+	0.559f,  0.861f,  0.639f,
+	0.195f,  0.548f,  0.859f,
+	0.014f,  0.184f,  0.576f,
+	0.771f,  0.328f,  0.970f,
+	0.406f,  0.615f,  0.116f,
+	0.676f,  0.977f,  0.133f,
+	0.971f,  0.572f,  0.833f,
+	0.140f,  0.616f,  0.489f,
+	0.997f,  0.513f,  0.064f,
+	0.945f,  0.719f,  0.592f,
+	0.543f,  0.021f,  0.978f,
+	0.279f,  0.317f,  0.505f,
+	0.167f,  0.620f,  0.077f,
+	0.347f,  0.857f,  0.137f,
+	0.055f,  0.953f,  0.042f,
+	0.714f,  0.505f,  0.345f,
+	0.783f,  0.290f,  0.734f,
+	0.722f,  0.645f,  0.174f,
+	0.302f,  0.455f,  0.848f,
+	0.225f,  0.587f,  0.040f,
+	0.517f,  0.713f,  0.338f,
+	0.053f,  0.959f,  0.120f,
+	0.393f,  0.621f,  0.362f,
+	0.673f,  0.211f,  0.457f,
+	0.820f,  0.883f,  0.371f,
+	0.982f,  0.099f,  0.879f
 };
+/* clang-format on */
 
 static void *allocate(size_t size) {
 	size_t old_top = heap_top;
@@ -110,13 +112,13 @@ static void *allocate(size_t size) {
 }
 
 float vec4_length(kinc_vector3_t a) {
-	return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+	return sqrtf(a.x * a.x + a.y * a.y + a.z * a.z);
 }
 
 kinc_vector3_t vec4_normalize(kinc_vector3_t a) {
 	float n = vec4_length(a);
 	if (n > 0.0) {
-		float inv_n = 1.0 / n;
+		float inv_n = 1.0f / n;
 		a.x *= inv_n;
 		a.y *= inv_n;
 		a.z *= inv_n;
@@ -145,14 +147,9 @@ float vec4_dot(kinc_vector3_t a, kinc_vector3_t b) {
 }
 
 kinc_matrix4x4_t matrix4x4_perspective_projection(float fovy, float aspect, float zn, float zf) {
-	float uh = 1.0 / tan(fovy / 2);
+	float uh = 1.0f / tanf(fovy / 2);
 	float uw = uh / aspect;
-	kinc_matrix4x4_t m = {
-		uw, 0, 0, 0,
-		0, uh, 0, 0,
-		0, 0, (zf + zn) / (zn - zf), -1,
-		0, 0, 2 * zf * zn / (zn - zf), 0
-	};
+	kinc_matrix4x4_t m = {uw, 0, 0, 0, 0, uh, 0, 0, 0, 0, (zf + zn) / (zn - zf), -1, 0, 0, 2 * zf * zn / (zn - zf), 0};
 	return m;
 }
 
@@ -160,12 +157,22 @@ kinc_matrix4x4_t matrix4x4_look_at(kinc_vector3_t eye, kinc_vector3_t at, kinc_v
 	kinc_vector3_t zaxis = vec4_normalize(vec4_sub(at, eye));
 	kinc_vector3_t xaxis = vec4_normalize(vec4_cross(zaxis, up));
 	kinc_vector3_t yaxis = vec4_cross(xaxis, zaxis);
-	kinc_matrix4x4_t m = {
-		xaxis.x, yaxis.x, -zaxis.x, 0,
-		xaxis.y, yaxis.y, -zaxis.y, 0,
-		xaxis.z, yaxis.z, -zaxis.z, 0,
-		-vec4_dot(xaxis, eye), -vec4_dot(yaxis, eye), vec4_dot(zaxis, eye), 1
-	};
+	kinc_matrix4x4_t m = {xaxis.x,
+	                      yaxis.x,
+	                      -zaxis.x,
+	                      0,
+	                      xaxis.y,
+	                      yaxis.y,
+	                      -zaxis.y,
+	                      0,
+	                      xaxis.z,
+	                      yaxis.z,
+	                      -zaxis.z,
+	                      0,
+	                      -vec4_dot(xaxis, eye),
+	                      -vec4_dot(yaxis, eye),
+	                      vec4_dot(zaxis, eye),
+	                      1};
 	return m;
 }
 
@@ -179,10 +186,10 @@ kinc_matrix4x4_t matrix4x4_identity(void) {
 }
 
 static void update(void *data) {
-	kinc_matrix4x4_t projection = matrix4x4_perspective_projection(45.0, 4.0 / 3.0, 0.1, 100.0);
-	kinc_vector3_t v0 = { 4, 3, 3 };
-	kinc_vector3_t v1 = { 0, 0, 0 };
-	kinc_vector3_t v2 = { 0, 1, 0 };
+	kinc_matrix4x4_t projection = matrix4x4_perspective_projection(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+	kinc_vector3_t v0 = {4, 3, 3};
+	kinc_vector3_t v1 = {0, 0, 0};
+	kinc_vector3_t v2 = {0, 1, 0};
 	kinc_matrix4x4_t view = matrix4x4_look_at(v0, v1, v2);
 	kinc_matrix4x4_t model = matrix4x4_identity();
 	kinc_matrix4x4_t mvp = matrix4x4_identity();
@@ -254,11 +261,11 @@ int kickstart(int argc, char **argv) {
 
 	kinc_g4_index_buffer_init(&indices, vertex_count, KINC_G4_INDEX_BUFFER_FORMAT_16BIT, KINC_G4_USAGE_STATIC);
 	{
-		uint16_t *id = (uint16_t *)kinc_g4_index_buffer_lock(&indices);
+		uint16_t *id = (uint16_t *)kinc_g4_index_buffer_lock_all(&indices);
 		for (int i = 0; i < vertex_count; ++i) {
 			id[i] = i;
 		}
-		kinc_g4_index_buffer_unlock(&indices);
+		kinc_g4_index_buffer_unlock_all(&indices);
 	}
 
 	kinc_start();

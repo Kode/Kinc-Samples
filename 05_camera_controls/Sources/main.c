@@ -2,18 +2,18 @@
 #include <kinc/graphics4/indexbuffer.h>
 #include <kinc/graphics4/pipeline.h>
 #include <kinc/graphics4/shader.h>
-#include <kinc/graphics4/vertexbuffer.h>
 #include <kinc/graphics4/texture.h>
+#include <kinc/graphics4/vertexbuffer.h>
 #include <kinc/input/keyboard.h>
 #include <kinc/input/mouse.h>
 #include <kinc/io/filereader.h>
-#include <kinc/system.h>
 #include <kinc/log.h>
+#include <kinc/system.h>
 #include <kinc/window.h>
 
 #include <assert.h>
-#include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
 #include <string.h>
 
 static kinc_g4_shader_t vertex_shader;
@@ -30,8 +30,8 @@ static uint8_t *heap = NULL;
 static size_t heap_top = 0;
 
 float last_time = 0.0;
-kinc_vector3_t position = { 0, 0, 5 };
-float horizontal_angle = 3.14;
+kinc_vector3_t position = {0, 0, 5};
+float horizontal_angle = 3.14f;
 float vertical_angle = 0.0;
 bool move_forward = false;
 bool move_backward = false;
@@ -43,6 +43,7 @@ float mouse_y = 0.0;
 float mouse_delta_x = 0.0;
 float mouse_delta_y = 0.0;
 
+/* clang-format off */
 static float vertices_data[] = {
     -1.0,-1.0,-1.0,
 	-1.0,-1.0, 1.0,
@@ -83,43 +84,44 @@ static float vertices_data[] = {
 };
 
 static float tex_data[] = {
-    0.000059, 0.000004,
-	0.000103, 0.336048,
-	0.335973, 0.335903,
-	1.000023, 0.000013,
-	0.667979, 0.335851,
-	0.999958, 0.336064,
-	0.667979, 0.335851,
-	0.336024, 0.671877,
-	0.667969, 0.671889,
-	1.000023, 0.000013,
-	0.668104, 0.000013,
-	0.667979, 0.335851,
-	0.000059, 0.000004,
-	0.335973, 0.335903,
-	0.336098, 0.000071,
-	0.667979, 0.335851,
-	0.335973, 0.335903,
-	0.336024, 0.671877,
-	1.000004, 0.671847,
-	0.999958, 0.336064,
-	0.667979, 0.335851,
-	0.668104, 0.000013,
-	0.335973, 0.335903,
-	0.667979, 0.335851,
-	0.335973, 0.335903,
-	0.668104, 0.000013,
-	0.336098, 0.000071,
-	0.000103, 0.336048,
-	0.000004, 0.671870,
-	0.336024, 0.671877,
-	0.000103, 0.336048,
-	0.336024, 0.671877,
-	0.335973, 0.335903,
-	0.667969, 0.671889,
-	1.000004, 0.671847,
-	0.667979, 0.335851
+    0.000059f, 0.000004f,
+	0.000103f, 0.336048f,
+	0.335973f, 0.335903f,
+	1.000023f, 0.000013f,
+	0.667979f, 0.335851f,
+	0.999958f, 0.336064f,
+	0.667979f, 0.335851f,
+	0.336024f, 0.671877f,
+	0.667969f, 0.671889f,
+	1.000023f, 0.000013f,
+	0.668104f, 0.000013f,
+	0.667979f, 0.335851f,
+	0.000059f, 0.000004f,
+	0.335973f, 0.335903f,
+	0.336098f, 0.000071f,
+	0.667979f, 0.335851f,
+	0.335973f, 0.335903f,
+	0.336024f, 0.671877f,
+	1.000004f, 0.671847f,
+	0.999958f, 0.336064f,
+	0.667979f, 0.335851f,
+	0.668104f, 0.000013f,
+	0.335973f, 0.335903f,
+	0.667979f, 0.335851f,
+	0.335973f, 0.335903f,
+	0.668104f, 0.000013f,
+	0.336098f, 0.000071f,
+	0.000103f, 0.336048f,
+	0.000004f, 0.671870f,
+	0.336024f, 0.671877f,
+	0.000103f, 0.336048f,
+	0.336024f, 0.671877f,
+	0.335973f, 0.335903f,
+	0.667969f, 0.671889f,
+	1.000004f, 0.671847f,
+	0.667979f, 0.335851f
 };
+/* clang-format on */
 
 static void *allocate(size_t size) {
 	size_t old_top = heap_top;
@@ -129,13 +131,13 @@ static void *allocate(size_t size) {
 }
 
 float vec4_length(kinc_vector3_t a) {
-	return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+	return sqrtf(a.x * a.x + a.y * a.y + a.z * a.z);
 }
 
 kinc_vector3_t vec4_normalize(kinc_vector3_t a) {
 	float n = vec4_length(a);
 	if (n > 0.0) {
-		float inv_n = 1.0 / n;
+		float inv_n = 1.0f / n;
 		a.x *= inv_n;
 		a.y *= inv_n;
 		a.z *= inv_n;
@@ -164,14 +166,9 @@ float vec4_dot(kinc_vector3_t a, kinc_vector3_t b) {
 }
 
 kinc_matrix4x4_t matrix4x4_perspective_projection(float fovy, float aspect, float zn, float zf) {
-	float uh = 1.0 / tan(fovy / 2);
+	float uh = 1.0f / tanf(fovy / 2);
 	float uw = uh / aspect;
-	kinc_matrix4x4_t m = {
-		uw, 0, 0, 0,
-		0, uh, 0, 0,
-		0, 0, (zf + zn) / (zn - zf), -1,
-		0, 0, 2 * zf * zn / (zn - zf), 0
-	};
+	kinc_matrix4x4_t m = {uw, 0, 0, 0, 0, uh, 0, 0, 0, 0, (zf + zn) / (zn - zf), -1, 0, 0, 2 * zf * zn / (zn - zf), 0};
 	return m;
 }
 
@@ -179,12 +176,22 @@ kinc_matrix4x4_t matrix4x4_look_at(kinc_vector3_t eye, kinc_vector3_t at, kinc_v
 	kinc_vector3_t zaxis = vec4_normalize(vec4_sub(at, eye));
 	kinc_vector3_t xaxis = vec4_normalize(vec4_cross(zaxis, up));
 	kinc_vector3_t yaxis = vec4_cross(xaxis, zaxis);
-	kinc_matrix4x4_t m = {
-		xaxis.x, yaxis.x, -zaxis.x, 0,
-		xaxis.y, yaxis.y, -zaxis.y, 0,
-		xaxis.z, yaxis.z, -zaxis.z, 0,
-		-vec4_dot(xaxis, eye), -vec4_dot(yaxis, eye), vec4_dot(zaxis, eye), 1
-	};
+	kinc_matrix4x4_t m = {xaxis.x,
+	                      yaxis.x,
+	                      -zaxis.x,
+	                      0,
+	                      xaxis.y,
+	                      yaxis.y,
+	                      -zaxis.y,
+	                      0,
+	                      xaxis.z,
+	                      yaxis.z,
+	                      -zaxis.z,
+	                      0,
+	                      -vec4_dot(xaxis, eye),
+	                      -vec4_dot(yaxis, eye),
+	                      vec4_dot(zaxis, eye),
+	                      1};
 	return m;
 }
 
@@ -197,25 +204,33 @@ kinc_matrix4x4_t matrix4x4_identity(void) {
 	return m;
 }
 
-void key_down(int key) {
-	if (key == KINC_KEY_UP) move_forward = true;
-    else if (key == KINC_KEY_DOWN) move_backward = true;
-    else if (key == KINC_KEY_LEFT) strafe_left = true;
-    else if (key == KINC_KEY_RIGHT) strafe_right = true;
+void key_down(int key, void *data) {
+	if (key == KINC_KEY_UP)
+		move_forward = true;
+	else if (key == KINC_KEY_DOWN)
+		move_backward = true;
+	else if (key == KINC_KEY_LEFT)
+		strafe_left = true;
+	else if (key == KINC_KEY_RIGHT)
+		strafe_right = true;
 }
 
-void key_up(int key) {
-	if (key == KINC_KEY_UP) move_forward = false;
-    else if (key == KINC_KEY_DOWN) move_backward = false;
-    else if (key == KINC_KEY_LEFT) strafe_left = false;
-    else if (key == KINC_KEY_RIGHT) strafe_right = false;
+void key_up(int key, void *data) {
+	if (key == KINC_KEY_UP)
+		move_forward = false;
+	else if (key == KINC_KEY_DOWN)
+		move_backward = false;
+	else if (key == KINC_KEY_LEFT)
+		strafe_left = false;
+	else if (key == KINC_KEY_RIGHT)
+		strafe_right = false;
 }
 
 void mouse_move(int window, int x, int y, int mx, int my, void *data) {
 	mouse_delta_x = x - mouse_x;
 	mouse_delta_y = y - mouse_y;
-	mouse_x = x;
-	mouse_y = y;
+	mouse_x = (float)x;
+	mouse_y = (float)y;
 }
 
 void mouse_down(int window, int button, int x, int y, void *data) {
@@ -227,57 +242,49 @@ void mouse_up(int window, int button, int x, int y, void *data) {
 }
 
 static void update(void *data) {
-	float delta_time = kinc_time() - last_time;
-	last_time = kinc_time();
+	float delta_time = (float)kinc_time() - last_time;
+	last_time = (float)kinc_time();
 
 	if (is_mouse_down) {
-		horizontal_angle -= 0.005 * mouse_delta_x;
-		vertical_angle -= 0.005 * mouse_delta_y;
+		horizontal_angle -= 0.005f * mouse_delta_x;
+		vertical_angle -= 0.005f * mouse_delta_y;
 	}
 	mouse_delta_x = 0;
 	mouse_delta_y = 0;
 
-	kinc_vector3_t direction = {
-		cos(vertical_angle) * sin(horizontal_angle),
-		sin(vertical_angle),
-		cos(vertical_angle) * cos(horizontal_angle)
-	};
+	kinc_vector3_t direction = {cosf(vertical_angle) * sinf(horizontal_angle), sinf(vertical_angle), cosf(vertical_angle) * cosf(horizontal_angle)};
 
-	kinc_vector3_t right = {
-		sin(horizontal_angle - 3.14 / 2.0),
-		0,
-		cos(horizontal_angle - 3.14 / 2.0)
-	};
+	kinc_vector3_t right = {sinf(horizontal_angle - 3.14f / 2.0f), 0, cosf(horizontal_angle - 3.14f / 2.0f)};
 
 	kinc_vector3_t up = vec4_cross(right, direction);
 
 	if (move_forward) {
-		position.x += (direction.x + delta_time) * 0.1;
-		position.y += (direction.y + delta_time) * 0.1;
-		position.z += (direction.z + delta_time) * 0.1;
+		position.x += (direction.x + delta_time) * 0.1f;
+		position.y += (direction.y + delta_time) * 0.1f;
+		position.z += (direction.z + delta_time) * 0.1f;
 	}
 	if (move_backward) {
-		position.x -= (direction.x + delta_time) * 0.1;
-		position.y -= (direction.y + delta_time) * 0.1;
-		position.z -= (direction.z + delta_time) * 0.1;
+		position.x -= (direction.x + delta_time) * 0.1f;
+		position.y -= (direction.y + delta_time) * 0.1f;
+		position.z -= (direction.z + delta_time) * 0.1f;
 	}
 	if (strafe_right) {
-		position.x += (right.x + delta_time) * 0.1;
-		position.y += (right.y + delta_time) * 0.1;
-		position.z += (right.z + delta_time) * 0.1;
+		position.x += (right.x + delta_time) * 0.1f;
+		position.y += (right.y + delta_time) * 0.1f;
+		position.z += (right.z + delta_time) * 0.1f;
 	}
 	if (strafe_left) {
-		position.x -= (right.x + delta_time) * 0.1;
-		position.y -= (right.y + delta_time) * 0.1;
-		position.z -= (right.z + delta_time) * 0.1;
+		position.x -= (right.x + delta_time) * 0.1f;
+		position.y -= (right.y + delta_time) * 0.1f;
+		position.z -= (right.z + delta_time) * 0.1f;
 	}
 
-	kinc_vector3_t look = { position.x + direction.x, position.y + direction.y, position.z + direction.z };
+	kinc_vector3_t look = {position.x + direction.x, position.y + direction.y, position.z + direction.z};
 
-	kinc_matrix4x4_t projection = matrix4x4_perspective_projection(45.0, 4.0 / 3.0, 0.1, 100.0);
-	kinc_vector3_t v0 = { 4, 3, 3 };
-	kinc_vector3_t v1 = { 0, 0, 0 };
-	kinc_vector3_t v2 = { 0, 1, 0 };
+	kinc_matrix4x4_t projection = matrix4x4_perspective_projection(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+	kinc_vector3_t v0 = {4, 3, 3};
+	kinc_vector3_t v1 = {0, 0, 0};
+	kinc_vector3_t v2 = {0, 1, 0};
 	kinc_matrix4x4_t view = matrix4x4_look_at(position, look, up);
 	kinc_matrix4x4_t model = matrix4x4_identity();
 	kinc_matrix4x4_t mvp = matrix4x4_identity();
@@ -311,8 +318,8 @@ static void load_shader(const char *filename, kinc_g4_shader_t *shader, kinc_g4_
 int kickstart(int argc, char **argv) {
 	kinc_init("Example", 1024, 768, NULL, NULL);
 	kinc_set_update_callback(update, NULL);
-	kinc_keyboard_set_key_down_callback(key_down);
-	kinc_keyboard_set_key_up_callback(key_up);
+	kinc_keyboard_set_key_down_callback(key_down, NULL);
+	kinc_keyboard_set_key_up_callback(key_up, NULL);
 	kinc_mouse_set_move_callback(mouse_move, NULL);
 	kinc_mouse_set_press_callback(mouse_down, NULL);
 	kinc_mouse_set_release_callback(mouse_up, NULL);
@@ -361,11 +368,11 @@ int kickstart(int argc, char **argv) {
 
 	kinc_g4_index_buffer_init(&indices, vertex_count, KINC_G4_INDEX_BUFFER_FORMAT_16BIT, KINC_G4_USAGE_STATIC);
 	{
-		uint16_t *id = (uint16_t *)kinc_g4_index_buffer_lock(&indices);
+		uint16_t *id = (uint16_t *)kinc_g4_index_buffer_lock_all(&indices);
 		for (int i = 0; i < vertex_count; ++i) {
 			id[i] = i;
 		}
-		kinc_g4_index_buffer_unlock(&indices);
+		kinc_g4_index_buffer_unlock_all(&indices);
 	}
 
 	kinc_start();
