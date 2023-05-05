@@ -9,7 +9,12 @@ const samples = [
 	'TextureArray',
 	'ShaderG5',
   'RuntimeShaderCompilation',
-  '00_empty'
+  '00_empty',
+  '01_triangle',
+  '02_matrix',
+  '03_colored_cube',
+  '04_textured_cube',
+  '05_camera_controls'
 ];
 
 const workflowsDir = path.join('.github', 'workflows');

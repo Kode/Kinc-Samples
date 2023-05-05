@@ -57,3 +57,23 @@ jobs:
           cd 00_empty
           ../Kinc/make freebsd -g opengl --compile
           cd ..
+          echo " * Compile 01_triangle"
+          cd 01_triangle
+          ../Kinc/make freebsd -g opengl --compile
+          cd ..
+          echo " * Compile 02_matrix"
+          cd 02_matrix
+          ../Kinc/make freebsd -g opengl --compile
+          cd ..
+          echo " * Compile 03_colored_cube"
+          cd 03_colored_cube
+          ../Kinc/make freebsd -g opengl --compile
+          cd ..
+          echo " * Compile 04_textured_cube"
+          cd 04_textured_cube
+          ../Kinc/make freebsd -g opengl --compile
+          cd ..
+          echo " * Compile 05_camera_controls"
+          cd 05_camera_controls
+          ../Kinc/make freebsd -g opengl --compile
+          cd ..

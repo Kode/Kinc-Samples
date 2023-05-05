@@ -58,3 +58,28 @@ jobs:
       run: ../Kinc/make windows -v vs2022 -g vulkan --compile
       env:
         VULKAN_SDK: C:\VulkanSDK\1.2.189.2
+    - name: Compile 01_triangle
+      working-directory: 01_triangle
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
+      env:
+        VULKAN_SDK: C:\VulkanSDK\1.2.189.2
+    - name: Compile 02_matrix
+      working-directory: 02_matrix
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
+      env:
+        VULKAN_SDK: C:\VulkanSDK\1.2.189.2
+    - name: Compile 03_colored_cube
+      working-directory: 03_colored_cube
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
+      env:
+        VULKAN_SDK: C:\VulkanSDK\1.2.189.2
+    - name: Compile 04_textured_cube
+      working-directory: 04_textured_cube
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
+      env:
+        VULKAN_SDK: C:\VulkanSDK\1.2.189.2
+    - name: Compile 05_camera_controls
+      working-directory: 05_camera_controls
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
+      env:
+        VULKAN_SDK: C:\VulkanSDK\1.2.189.2
