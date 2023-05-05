@@ -44,3 +44,6 @@ jobs:
     - name: Compile RuntimeShaderCompilation
       working-directory: RuntimeShaderCompilation
       run: ../Kinc/make linux -g opengl --compile
+    - name: Compile 00_empty
+      working-directory: 00_empty
+      run: ../Kinc/make linux -g opengl --compile

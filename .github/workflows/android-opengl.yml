@@ -37,3 +37,6 @@ jobs:
     - name: Compile ShaderG5
       working-directory: ShaderG5
       run: ../Kinc/make android -g opengl --compile
+    - name: Compile 00_empty
+      working-directory: 00_empty
+      run: ../Kinc/make android -g opengl --compile

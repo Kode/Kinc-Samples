@@ -8,7 +8,8 @@ const samples = [
 	'ComputeShader',
 	'TextureArray',
 	'ShaderG5',
-  'RuntimeShaderCompilation'
+  'RuntimeShaderCompilation',
+  '00_empty'
 ];
 
 const workflowsDir = path.join('.github', 'workflows');

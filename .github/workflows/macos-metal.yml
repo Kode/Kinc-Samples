@@ -40,3 +40,6 @@ jobs:
     - name: Compile RuntimeShaderCompilation
       working-directory: RuntimeShaderCompilation
       run: ../Kinc/make osx -g metal --compile
+    - name: Compile 00_empty
+      working-directory: 00_empty
+      run: ../Kinc/make osx -g metal --compile

@@ -81,3 +81,7 @@ jobs:
             cd ShaderG5
             ../Kinc/make -g opengl --compile
             cd ..
+            echo " * Compile 00_empty"
+            cd 00_empty
+            ../Kinc/make -g opengl --compile
+            cd ..

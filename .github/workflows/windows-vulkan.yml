@@ -53,3 +53,8 @@ jobs:
       run: ../Kinc/make windows -v vs2022 -g vulkan --compile
       env:
         VULKAN_SDK: C:\VulkanSDK\1.2.189.2
+    - name: Compile 00_empty
+      working-directory: 00_empty
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
+      env:
+        VULKAN_SDK: C:\VulkanSDK\1.2.189.2

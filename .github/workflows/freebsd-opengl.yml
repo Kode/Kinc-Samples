@@ -53,3 +53,7 @@ jobs:
           cd ShaderG5
           ../Kinc/make freebsd -g opengl --compile
           cd ..
+          echo " * Compile 00_empty"
+          cd 00_empty
+          ../Kinc/make freebsd -g opengl --compile
+          cd ..
