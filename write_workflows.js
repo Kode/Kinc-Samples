@@ -14,7 +14,8 @@ const samples = [
   '02_matrix',
   '03_colored_cube',
   '04_textured_cube',
-  '05_camera_controls'
+  '05_camera_controls',
+  '06_render_targets'
 ];
 
 const workflowsDir = path.join('.github', 'workflows');

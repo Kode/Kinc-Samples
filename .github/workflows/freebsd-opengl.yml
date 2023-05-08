@@ -77,3 +77,7 @@ jobs:
           cd 05_camera_controls
           ../Kinc/make freebsd -g opengl --compile
           cd ..
+          echo " * Compile 06_render_targets"
+          cd 06_render_targets
+          ../Kinc/make freebsd -g opengl --compile
+          cd ..

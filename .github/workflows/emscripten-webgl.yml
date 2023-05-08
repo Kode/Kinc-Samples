@@ -51,3 +51,6 @@ jobs:
     - name: Compile 05_camera_controls
       working-directory: 05_camera_controls
       run: ../emsdk/emsdk activate latest && source ../emsdk/emsdk_env.sh && ../Kinc/make emscripten -g opengl --compile && cd build/Release && make
+    - name: Compile 06_render_targets
+      working-directory: 06_render_targets
+      run: ../emsdk/emsdk activate latest && source ../emsdk/emsdk_env.sh && ../Kinc/make emscripten -g opengl --compile && cd build/Release && make

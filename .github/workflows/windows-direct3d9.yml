@@ -50,3 +50,6 @@ jobs:
     - name: Compile 05_camera_controls
       working-directory: 05_camera_controls
       run: ../Kinc/make windows -v vs2022 -g direct3d9 --compile
+    - name: Compile 06_render_targets
+      working-directory: 06_render_targets
+      run: ../Kinc/make windows -v vs2022 -g direct3d9 --compile

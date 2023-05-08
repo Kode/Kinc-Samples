@@ -63,3 +63,6 @@ jobs:
     - name: Compile 05_camera_controls
       working-directory: 05_camera_controls
       run: ../Kinc/make linux -g vulkan --compile
+    - name: Compile 06_render_targets
+      working-directory: 06_render_targets
+      run: ../Kinc/make linux -g vulkan --compile
