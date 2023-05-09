@@ -65,3 +65,6 @@ jobs:
     - name: Compile 06_render_targets
       working-directory: 06_render_targets
       run: ../Kinc/make linux -g opengl --compile
+    - name: Compile 07_multiple_render_targets
+      working-directory: 07_multiple_render_targets
+      run: ../Kinc/make linux -g opengl --compile

@@ -81,3 +81,7 @@ jobs:
           cd 06_render_targets
           ../Kinc/make freebsd -g opengl --compile
           cd ..
+          echo " * Compile 07_multiple_render_targets"
+          cd 07_multiple_render_targets
+          ../Kinc/make freebsd -g opengl --compile
+          cd ..

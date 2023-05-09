@@ -2,9 +2,9 @@
 #include <kinc/graphics4/graphics.h>
 #include <kinc/graphics4/indexbuffer.h>
 #include <kinc/graphics4/pipeline.h>
+#include <kinc/graphics4/rendertarget.h>
 #include <kinc/graphics4/shader.h>
 #include <kinc/graphics4/vertexbuffer.h>
-#include <kinc/graphics4/rendertarget.h>
 #include <kinc/io/filereader.h>
 #include <kinc/system.h>
 
@@ -52,7 +52,7 @@ static void draw_image(uint8_t *pixels, int x, int y) {
 }
 
 static void update(void *data) {
-	kinc_g4_render_target_t *targets[] = { &target0, &target1, &target2, &target3 };
+	kinc_g4_render_target_t *targets[] = {&target0, &target1, &target2, &target3};
 	kinc_g4_set_render_targets(targets, 4);
 	kinc_g4_clear(KINC_G4_CLEAR_COLOR, 0, 0.0f, 0);
 	kinc_g4_set_pipeline(&pipeline);
@@ -137,11 +137,11 @@ int kickstart(int argc, char **argv) {
 
 	kinc_g4_index_buffer_init(&indices, 3, KINC_G4_INDEX_BUFFER_FORMAT_16BIT, KINC_G4_USAGE_STATIC);
 	{
-		uint16_t *i = (uint16_t *)kinc_g4_index_buffer_lock(&indices);
+		uint16_t *i = (uint16_t *)kinc_g4_index_buffer_lock_all(&indices);
 		i[0] = 0;
 		i[1] = 1;
 		i[2] = 2;
-		kinc_g4_index_buffer_unlock(&indices);
+		kinc_g4_index_buffer_unlock_all(&indices);
 	}
 
 	kinc_start();
