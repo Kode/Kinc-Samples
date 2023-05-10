@@ -117,3 +117,7 @@ jobs:
             cd 08_float_render_targets
             ../Kinc/make -g opengl --compile
             cd ..
+            echo " * Compile 09_depth_render_targets"
+            cd 09_depth_render_targets
+            ../Kinc/make -g opengl --compile
+            cd ..

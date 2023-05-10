@@ -64,3 +64,6 @@ jobs:
     - name: Compile 08_float_render_targets
       working-directory: 08_float_render_targets
       run: ../Kinc/make osx -g opengl --compile
+    - name: Compile 09_depth_render_targets
+      working-directory: 09_depth_render_targets
+      run: ../Kinc/make osx -g opengl --compile
