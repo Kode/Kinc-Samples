@@ -67,3 +67,6 @@ jobs:
     - name: Compile 09_depth_render_targets
       working-directory: 09_depth_render_targets
       run: ../Kinc/make osx -g opengl --compile
+    - name: Compile 10_cubemap
+      working-directory: 10_cubemap
+      run: ../Kinc/make osx -g opengl --compile

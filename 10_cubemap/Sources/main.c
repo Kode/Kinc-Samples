@@ -1,9 +1,9 @@
 #include <kinc/graphics4/graphics.h>
 #include <kinc/graphics4/indexbuffer.h>
 #include <kinc/graphics4/pipeline.h>
+#include <kinc/graphics4/rendertarget.h>
 #include <kinc/graphics4/shader.h>
 #include <kinc/graphics4/vertexbuffer.h>
-#include <kinc/graphics4/rendertarget.h>
 #include <kinc/io/filereader.h>
 #include <kinc/system.h>
 
@@ -98,15 +98,15 @@ int kickstart(int argc, char **argv) {
 		int i = 0;
 
 		v[i++] = -1.0;
-		v[i++] = kinc_g4_render_targets_inverted_y() ? -1.0 : 1.0;
+		v[i++] = kinc_g4_render_targets_inverted_y() ? -1.0f : 1.0f;
 		v[i++] = 0.0;
 
 		v[i++] = 1.0;
-		v[i++] = kinc_g4_render_targets_inverted_y() ? -1.0 : 1.0;
+		v[i++] = kinc_g4_render_targets_inverted_y() ? -1.0f : 1.0f;
 		v[i++] = 0.0;
 
 		v[i++] = 0.0;
-		v[i++] = kinc_g4_render_targets_inverted_y() ? 1.0 : -1.0;
+		v[i++] = kinc_g4_render_targets_inverted_y() ? 1.0f : -1.0f;
 		v[i++] = 0.0;
 
 		kinc_g4_vertex_buffer_unlock_all(&vertices);
@@ -114,11 +114,11 @@ int kickstart(int argc, char **argv) {
 
 	kinc_g4_index_buffer_init(&indices, 3, KINC_G4_INDEX_BUFFER_FORMAT_16BIT, KINC_G4_USAGE_STATIC);
 	{
-		uint16_t *i = (uint16_t *)kinc_g4_index_buffer_lock(&indices);
+		uint16_t *i = (uint16_t *)kinc_g4_index_buffer_lock_all(&indices);
 		i[0] = 0;
 		i[1] = 1;
 		i[2] = 2;
-		kinc_g4_index_buffer_unlock(&indices);
+		kinc_g4_index_buffer_unlock_all(&indices);
 	}
 
 	load_shader("shader_fs.vert", &vertex_shader_fs, KINC_G4_SHADER_TYPE_VERTEX);
@@ -154,11 +154,11 @@ int kickstart(int argc, char **argv) {
 
 	kinc_g4_index_buffer_init(&indices_fs, 3, KINC_G4_INDEX_BUFFER_FORMAT_16BIT, KINC_G4_USAGE_STATIC);
 	{
-		uint16_t *i = (uint16_t *)kinc_g4_index_buffer_lock(&indices_fs);
+		uint16_t *i = (uint16_t *)kinc_g4_index_buffer_lock_all(&indices_fs);
 		i[0] = 0;
 		i[1] = 1;
 		i[2] = 2;
-		kinc_g4_index_buffer_unlock(&indices_fs);
+		kinc_g4_index_buffer_unlock_all(&indices_fs);
 	}
 
 	kinc_start();

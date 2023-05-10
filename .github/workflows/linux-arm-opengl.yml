@@ -121,3 +121,7 @@ jobs:
             cd 09_depth_render_targets
             ../Kinc/make -g opengl --compile
             cd ..
+            echo " * Compile 10_cubemap"
+            cd 10_cubemap
+            ../Kinc/make -g opengl --compile
+            cd ..
