@@ -57,3 +57,6 @@ jobs:
     - name: Compile 07_multiple_render_targets
       working-directory: 07_multiple_render_targets
       run: ../emsdk/emsdk activate latest && source ../emsdk/emsdk_env.sh && ../Kinc/make emscripten -g opengl --compile && cd build/Release && make
+    - name: Compile 08_float_render_targets
+      working-directory: 08_float_render_targets
+      run: ../emsdk/emsdk activate latest && source ../emsdk/emsdk_env.sh && ../Kinc/make emscripten -g opengl --compile && cd build/Release && make
