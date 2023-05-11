@@ -22,7 +22,8 @@ const samples = [
   '10_cubemap',
   '11_instanced_rendering',
   '12_set_render_target_depth',
-  '13_generate_mipmaps'
+  '13_generate_mipmaps',
+  '14_set_mipmap'
 ];
 
 const workflowsDir = path.join('.github', 'workflows');

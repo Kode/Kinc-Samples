@@ -109,3 +109,7 @@ jobs:
           cd 13_generate_mipmaps
           ../Kinc/make freebsd -g opengl --compile
           cd ..
+          echo " * Compile 14_set_mipmap"
+          cd 14_set_mipmap
+          ../Kinc/make freebsd -g opengl --compile
+          cd ..

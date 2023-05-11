@@ -137,3 +137,7 @@ jobs:
             cd 13_generate_mipmaps
             ../Kinc/make -g opengl --compile
             cd ..
+            echo " * Compile 14_set_mipmap"
+            cd 14_set_mipmap
+            ../Kinc/make -g opengl --compile
+            cd ..

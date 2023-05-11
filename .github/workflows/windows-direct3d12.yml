@@ -79,3 +79,6 @@ jobs:
     - name: Compile 13_generate_mipmaps
       working-directory: 13_generate_mipmaps
       run: ../Kinc/make windows -v vs2022 -g direct3d12 --compile
+    - name: Compile 14_set_mipmap
+      working-directory: 14_set_mipmap
+      run: ../Kinc/make windows -v vs2022 -g direct3d12 --compile

@@ -76,3 +76,6 @@ jobs:
     - name: Compile 13_generate_mipmaps
       working-directory: 13_generate_mipmaps
       run: ../Kinc/make ios -g opengl --nosigning --compile
+    - name: Compile 14_set_mipmap
+      working-directory: 14_set_mipmap
+      run: ../Kinc/make ios -g opengl --nosigning --compile
