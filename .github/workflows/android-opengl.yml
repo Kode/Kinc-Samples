@@ -76,3 +76,6 @@ jobs:
     - name: Compile 12_set_render_target_depth
       working-directory: 12_set_render_target_depth
       run: ../Kinc/make android -g opengl --compile
+    - name: Compile 13_generate_mipmaps
+      working-directory: 13_generate_mipmaps
+      run: ../Kinc/make android -g opengl --compile

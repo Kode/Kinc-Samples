@@ -118,3 +118,8 @@ jobs:
       run: ../Kinc/make windows -v vs2022 -g vulkan --compile
       env:
         VULKAN_SDK: C:\VulkanSDK\1.2.189.2
+    - name: Compile 13_generate_mipmaps
+      working-directory: 13_generate_mipmaps
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
+      env:
+        VULKAN_SDK: C:\VulkanSDK\1.2.189.2

@@ -105,3 +105,7 @@ jobs:
           cd 12_set_render_target_depth
           ../Kinc/make freebsd -g opengl --compile
           cd ..
+          echo " * Compile 13_generate_mipmaps"
+          cd 13_generate_mipmaps
+          ../Kinc/make freebsd -g opengl --compile
+          cd ..
