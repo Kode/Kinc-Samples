@@ -23,7 +23,8 @@ const samples = [
   '11_instanced_rendering',
   '12_set_render_target_depth',
   '13_generate_mipmaps',
-  '14_set_mipmap'
+  '14_set_mipmap',
+  '15_deinterleaved_buffers'
 ];
 
 const workflowsDir = path.join('.github', 'workflows');

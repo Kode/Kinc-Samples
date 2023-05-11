@@ -82,3 +82,6 @@ jobs:
     - name: Compile 14_set_mipmap
       working-directory: 14_set_mipmap
       run: ../Kinc/make android -g opengl --compile
+    - name: Compile 15_deinterleaved_buffers
+      working-directory: 15_deinterleaved_buffers
+      run: ../Kinc/make android -g opengl --compile

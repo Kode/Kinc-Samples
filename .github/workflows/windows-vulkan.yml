@@ -128,3 +128,8 @@ jobs:
       run: ../Kinc/make windows -v vs2022 -g vulkan --compile
       env:
         VULKAN_SDK: C:\VulkanSDK\1.2.189.2
+    - name: Compile 15_deinterleaved_buffers
+      working-directory: 15_deinterleaved_buffers
+      run: ../Kinc/make windows -v vs2022 -g vulkan --compile
+      env:
+        VULKAN_SDK: C:\VulkanSDK\1.2.189.2

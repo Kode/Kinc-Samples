@@ -141,3 +141,7 @@ jobs:
             cd 14_set_mipmap
             ../Kinc/make -g opengl --compile
             cd ..
+            echo " * Compile 15_deinterleaved_buffers"
+            cd 15_deinterleaved_buffers
+            ../Kinc/make -g opengl --compile
+            cd ..
