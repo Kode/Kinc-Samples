@@ -20,7 +20,8 @@ const samples = [
   '08_float_render_targets',
   '09_depth_render_targets',
   '10_cubemap',
-  '11_instanced_rendering'
+  '11_instanced_rendering',
+  '12_set_render_target_depth'
 ];
 
 const workflowsDir = path.join('.github', 'workflows');

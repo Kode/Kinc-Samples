@@ -68,3 +68,6 @@ jobs:
     - name: Compile 11_instanced_rendering
       working-directory: 11_instanced_rendering
       run: ../Kinc/make windows -v vs2022 -g direct3d9 --compile
+    - name: Compile 12_set_render_target_depth
+      working-directory: 12_set_render_target_depth
+      run: ../Kinc/make windows -v vs2022 -g direct3d9 --compile

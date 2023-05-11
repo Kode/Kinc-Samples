@@ -129,3 +129,7 @@ jobs:
             cd 11_instanced_rendering
             ../Kinc/make -g opengl --compile
             cd ..
+            echo " * Compile 12_set_render_target_depth"
+            cd 12_set_render_target_depth
+            ../Kinc/make -g opengl --compile
+            cd ..

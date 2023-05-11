@@ -73,3 +73,6 @@ jobs:
     - name: Compile 11_instanced_rendering
       working-directory: 11_instanced_rendering
       run: ../Kinc/make windowsapp -v vs2022 --compile
+    - name: Compile 12_set_render_target_depth
+      working-directory: 12_set_render_target_depth
+      run: ../Kinc/make windowsapp -v vs2022 --compile
