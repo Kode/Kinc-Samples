@@ -125,3 +125,7 @@ jobs:
             cd 10_cubemap
             ../Kinc/make -g opengl --compile
             cd ..
+            echo " * Compile 11_instanced_rendering"
+            cd 11_instanced_rendering
+            ../Kinc/make -g opengl --compile
+            cd ..

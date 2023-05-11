@@ -32,7 +32,7 @@ static void update(void *data) {
 	kinc_g4_clear(KINC_G4_CLEAR_COLOR, 0, 0.0f, 0);
 
 	kinc_g4_set_pipeline(&pipeline);
-	kinc_g4_vertex_buffer_t *buffers[] = { &vertices, &vertices_inst };
+	kinc_g4_vertex_buffer_t *buffers[] = {&vertices, &vertices_inst};
 	kinc_g4_set_vertex_buffers(buffers, 2);
 	kinc_g4_set_index_buffer(&indices);
 	kinc_g4_draw_indexed_vertices_instanced(4);
@@ -122,11 +122,11 @@ int kickstart(int argc, char **argv) {
 
 	kinc_g4_index_buffer_init(&indices, 3, KINC_G4_INDEX_BUFFER_FORMAT_16BIT, KINC_G4_USAGE_STATIC);
 	{
-		uint16_t *i = (uint16_t *)kinc_g4_index_buffer_lock(&indices);
+		uint16_t *i = (uint16_t *)kinc_g4_index_buffer_lock_all(&indices);
 		i[0] = 0;
 		i[1] = 1;
 		i[2] = 2;
-		kinc_g4_index_buffer_unlock(&indices);
+		kinc_g4_index_buffer_unlock_all(&indices);
 	}
 
 	kinc_start();

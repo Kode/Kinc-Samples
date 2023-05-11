@@ -65,3 +65,6 @@ jobs:
     - name: Compile 10_cubemap
       working-directory: 10_cubemap
       run: ../Kinc/make windows -v vs2022 -g direct3d9 --compile
+    - name: Compile 11_instanced_rendering
+      working-directory: 11_instanced_rendering
+      run: ../Kinc/make windows -v vs2022 -g direct3d9 --compile
