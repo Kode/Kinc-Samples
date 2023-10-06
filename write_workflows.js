@@ -50,7 +50,7 @@ jobs:
     runs-on: ${workflow.runsOn}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 ${steps}
     - name: Get Submodules
       run: ./get_dlc
@@ -134,7 +134,7 @@ jobs:
             distro: ubuntu20.04
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: uraimo/run-on-arch-action@v2.0.9
         name: Run Tests in \${{ matrix.distro }} \${{ matrix.arch }}
         id: build
@@ -216,6 +216,17 @@ function writeWorkflow(workflow) {
     return;
   }
 
+  const java = workflow.java
+?
+`
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'oracle'
+        java-version: '17'
+`
+:
+'';
+
   const steps = workflow.steps ?? '';
   const postfixSteps = workflow.postfixSteps ?? '';
 
@@ -236,7 +247,8 @@ jobs:
     runs-on: ${workflow.runsOn}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+${java}
 ${steps}
     - name: Get Submodules
       run: ./get_dlc
@@ -283,12 +295,14 @@ const workflows = [
   {
     sys: 'Android',
     gfx: 'OpenGL',
-    runsOn: 'ubuntu-latest'
+    runsOn: 'ubuntu-latest',
+    java: true
   },
   {
     sys: 'Android',
     gfx: 'Vulkan',
-    runsOn: 'ubuntu-latest'
+    runsOn: 'ubuntu-latest',
+    java: true
   },
   {
     sys: 'Emscripten',
