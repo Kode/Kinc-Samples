@@ -330,11 +330,11 @@ const workflows = [
       run: git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest
 `
   },
-  {
+  /*{
     sys: 'FreeBSD',
     gfx: 'OpenGL',
     runsOn: 'macos-12'
-  },
+  },*/
   {
     sys: 'iOS',
     gfx: 'Metal',
