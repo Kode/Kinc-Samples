@@ -373,7 +373,7 @@ const workflows = [
 `    - name: Get LunarG key
       run: wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
     - name: Get LunarG apt sources
-      run: sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-jammy.list http://packages.lunarg.com/vulkan/lunarg-vulkan-jammy.list
+      run: sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-1.3.275-jammy.list https://packages.lunarg.com/vulkan/1.3.275/lunarg-vulkan-1.3.275-jammy.list
     - name: Apt Update
       run: sudo apt update
     - name: Apt Install
@@ -433,12 +433,12 @@ const workflows = [
     vs: 'vs2022',
     env:
 `      env:
-        VULKAN_SDK: C:\\VulkanSDK\\1.2.189.2
+        VULKAN_SDK: C:\\VulkanSDK\\1.3.275.0
 `,
     steps:
 `    - name: Setup Vulkan
       run: |
-          Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/1.2.189.2/windows/VulkanSDK-1.2.189.2-Installer.exe" -OutFile VulkanSDK.exe
+          Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/1.3.275.0/windows/VulkanSDK-1.3.275.0-Installer.exe" -OutFile VulkanSDK.exe
           $installer = Start-Process -FilePath VulkanSDK.exe -Wait -PassThru -ArgumentList @("--da", "--al", "-c", "in");
           $installer.WaitForExit();`
   }
