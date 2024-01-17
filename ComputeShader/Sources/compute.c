@@ -1,4 +1,4 @@
-#include <kinc/compute/compute.h>
+#include <kinc/graphics4/compute.h>
 #include <kinc/graphics4/graphics.h>
 #include <kinc/graphics4/indexbuffer.h>
 #include <kinc/graphics4/pipeline.h>
@@ -19,9 +19,9 @@ static kinc_g4_index_buffer_t indices;
 static kinc_g4_texture_t texture;
 static kinc_g4_texture_unit_t texunit;
 static kinc_g4_constant_location_t offset;
-static kinc_compute_shader_t computeShader;
-static kinc_compute_texture_unit_t computeTexunit;
-static kinc_compute_constant_location_t computeLocation;
+static kinc_g4_compute_shader computeShader;
+static kinc_g4_texture_unit_t computeTexunit;
+static kinc_g4_constant_location_t computeLocation;
 
 #define WIDTH 1024
 #define HEIGHT 768
@@ -31,10 +31,10 @@ void update(void *data) {
 	kinc_g4_begin(0);
 	kinc_g4_clear(KINC_G4_CLEAR_COLOR | KINC_G4_CLEAR_DEPTH, 0, 0.0f, 0);
 
-	kinc_compute_set_shader(&computeShader);
-	kinc_compute_set_texture(computeTexunit, &texture, KINC_COMPUTE_ACCESS_READ_WRITE);
-	kinc_compute_set_float(computeLocation, 0);
-	kinc_compute(texture.tex_width / 16, texture.tex_height / 16, 1);
+	kinc_g4_set_compute_shader(&computeShader);
+	kinc_g4_set_image_texture(computeTexunit, &texture);
+	kinc_g4_set_float(computeLocation, 0);
+	kinc_g4_compute(texture.tex_width / 16, texture.tex_height / 16, 1);
 
 	kinc_g4_set_pipeline(&pipeline);
 	kinc_matrix3x3_t matrix = kinc_matrix3x3_rotation_z(0);
@@ -61,12 +61,12 @@ int kickstart(int argc, char **argv) {
 		kinc_file_reader_open(&cs, "test.comp", KINC_FILE_TYPE_ASSET);
 		assert(kinc_file_reader_size(&cs) <= MAX_SHADER_SIZE);
 		kinc_file_reader_read(&cs, shaderSource, kinc_file_reader_size(&cs));
-		kinc_compute_shader_init(&computeShader, shaderSource, (int)kinc_file_reader_size(&cs));
+		kinc_g4_compute_shader_init(&computeShader, shaderSource, (int)kinc_file_reader_size(&cs));
 		kinc_file_reader_close(&cs);
 	}
 
-	computeTexunit = kinc_compute_shader_get_texture_unit(&computeShader, "destTex");
-	computeLocation = kinc_compute_shader_get_constant_location(&computeShader, "roll");
+	computeTexunit = kinc_g4_compute_shader_get_texture_unit(&computeShader, "destTex");
+	computeLocation = kinc_g4_compute_shader_get_constant_location(&computeShader, "roll");
 
 	{
 		kinc_file_reader_t vs;
