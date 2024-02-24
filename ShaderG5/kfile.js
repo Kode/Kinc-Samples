@@ -1,6 +1,6 @@
 const project = new Project('ShaderTest');
 
-await project.addProject('../Kinc');
+await project.addProject(findKinc());
 
 project.addFile('Sources/**');
 project.addFile('Shaders/**');
